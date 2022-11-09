@@ -2,14 +2,24 @@ import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import wallpaper from "./assets/images/wallpaper.webp";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import NotificationsList from "./src/components/NotificationList";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 export default function App() {
+  const [date, setDate] = useState(dayjs());
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setDate(dayjs());
+    }, 1000 * 60);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <ImageBackground source={wallpaper} style={StyleSheet.absoluteFill}>
       <View style={styles.header}>
         <Ionicons name="ios-lock-closed" size={20} color="white" />
-        <Text style={styles.date}>Friday, 30 September</Text>
-        <Text style={styles.time}>15:26</Text>
+        <Text style={styles.date}>{date.format("dddd, DD MMMM")}</Text>
+        <Text style={styles.time}>{date.format("hh:mm")}</Text>
       </View>
 
       {/* Notification List */}
